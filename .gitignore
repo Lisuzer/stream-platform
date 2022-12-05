@@ -1,0 +1,6 @@
+# compiled output
+/api-gateway/node_modules
+/user/node_modules
+/series/node_modules
+/subscribe/node_modules
+/auth/node_modules

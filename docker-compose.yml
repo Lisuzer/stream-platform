@@ -1,0 +1,51 @@
+version: "3.2"
+services:
+  api-gateway:
+    build:
+      context: ./stream-platform
+      dockerfile: ./api-gateway/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app/api-gateway
+    restart: on-failure
+    depends_on:
+      - mongo
+
+  series:
+    build:
+      context: ./stream-platform
+      dockerfile: ./series/Dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - .:/app/series
+    restart: on-failure
+    depends_on:
+      - mongo
+  user:
+    build:
+      context: ./stream-platform
+      dockerfile: ./user/Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app/user
+    restart: on-failure
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=backend
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - mongo_data:/var/lib/mongo
+    ports:
+      - 1337:1337
+
+volumes:
+  mongo_data:
